@@ -2,6 +2,7 @@ import FormClima from "./components/FormClima";
 import Clima from "./components/Clima";
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
+import { WiCloudy } from 'react-icons/wi';
 
 function App() {
   const [ciudad, setCiudad] = useState("");
@@ -16,14 +17,16 @@ function App() {
       setError("Debes escribir un pais y una ciudad");
       return;
     }
+    const codigoPais = pais.trim().toUpperCase();
     try {
       setSpinner(true);
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=${API_KEY}&units=metric&lang=es`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad},${codigoPais}&appid=${API_KEY}&units=metric&lang=es`;
       const clima = await fetch(url);
       if (clima.status === 200) {
         const datos = await clima.json();
         setClima(datos);
         setSpinner(false);
+        setError("");
       } else {
         setError("no se encontraron datos para esa ciudad o pais");
         setClima({});
@@ -38,6 +41,8 @@ function App() {
 
   return (
     <>
+    <main>
+    <h1 className="bg-info text-center text-light py-3">RollingClima <WiCloudy size={70} /></h1>
       {spinner ? (
         <div className="d-flex justify-content-center my-5">
           <Spinner animation="grow" />
@@ -56,7 +61,9 @@ function App() {
         </>
       )}
       {error && <p className="text-danger text-center fw-bold">{error}</p>}
-    </>
+    </main>
+      <footer className="bg-info text-center text-light py-3">Todos los derechos reservados &copy; </footer>
+      </>
   );
 }
 

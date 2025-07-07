@@ -1,6 +1,18 @@
 import { Button, Card, Container } from "react-bootstrap";
+import Flag from 'react-world-flags';
 
 const Clima = ({ datoClima }) => {
+  const nombresPaises = {
+  AR: "Argentina ",
+  CO: "Colombia",
+  MX: "México",
+  ES: "España",
+  US: "Estados Unidos",
+  CL: "Chile",
+  BR: "Brasil",
+  PE: "Perú",
+};
+
   if (!datoClima || Object.keys(datoClima).length === 0) return null;
 
   const { name, sys, main, weather, wind } = datoClima;
@@ -16,7 +28,8 @@ const Clima = ({ datoClima }) => {
           />
           <Card.Body>
             <Card.Title>
-              {name}, {sys?.country}
+              {name}, {nombresPaises[sys?.country] || sys?.country}
+              <Flag code={sys?.country} style={{ width: '2em', height: '2em', marginLeft: '10px' }} />
             </Card.Title>
             <Card.Text>🌤️{descripcion} </Card.Text>
             <Card.Text>
@@ -26,7 +39,7 @@ const Clima = ({ datoClima }) => {
             <Card.Text>🌬️Viento {wind?.speed}</Card.Text>
             <Card.Text></Card.Text>
             <Button
-            className="w-100"
+            className="w-100 text-light"
               variant="info"
               href={`https://openweathermap.org/find?q=${name}`}
               target="_blank"
